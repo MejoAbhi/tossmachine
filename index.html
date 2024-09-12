@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            box-sizing: border-box;
+            padding: 40px;
+            background-color: #6e6e6e;
+            
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            
+        }
+        #btn{
+            background-color: #bcfd4c;
+            height: 40px;
+            width: 100px;
+            border-radius: 10px;
+            border: none;
+            
+        }
+        h3,p{
+            color: aliceblue;
+            font-size: x-large;
+        }
+
+    </style>
+</head>
+<body>
+    <section class="main">
+        <h3>TOSS <span>MACHINE</span></h3>
+        <button type="submit" id="btn">TOSS</button>
+        <p id="note"></p>
+    </section>
+    <script>
+        let btn = document.getElementById('btn')
+        let note = document.getElementById('note');
+        let decide = Math.floor(Math.random()*2);
+        btn.addEventListener('click',()=>{
+            
+            decideGame();
+            console.log(decide);
+        })
+        function decideGame(){
+            if(decide%2==0){
+                note.innerHTML = "Heads"
+                decide = Math.floor(Math.random()*2);
+                setTimeout(()=>{
+                    note.innerHTML ='';
+                },2000)
+            
+                
+            }
+            else if(decide===0){
+                note.innerHTML ="Toss Again"
+                decide = Math.floor(Math.random()*2);
+                setTimeout(()=>{
+                    note.innerHTML ='';
+                },2000)
+                
+            }
+            else{
+                note.innerHTML ="Tells"
+                decide = Math.floor(Math.random()*2);
+                setTimeout(()=>{
+                    note.innerHTML ='';
+                },2000)
+                
+            }
+        }
+    </script>
+</body>
+</html>
