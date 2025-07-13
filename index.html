@@ -4,77 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body{
-            box-sizing: border-box;
-            padding: 40px;
-            background-color: #6e6e6e;
-            
-        }
-        .main{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            
-        }
-        #btn{
-            background-color: #bcfd4c;
-            height: 40px;
-            width: 100px;
-            border-radius: 10px;
-            border: none;
-            
-        }
-        h3,p{
-            color: aliceblue;
-            font-size: x-large;
-        }
-
-    </style>
-</head>
+     <style>
+    #rose {
+      display: none;
+      width: 200px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
 <body>
-    <section class="main">
-        <h3>TOSS <span>MACHINE</span></h3>
-        <button type="submit" id="btn">TOSS</button>
-        <p id="note"></p>
-    </section>
-    <script>
-        let btn = document.getElementById('btn')
-        let note = document.getElementById('note');
-        let decide = Math.floor(Math.random()*2);
-        btn.addEventListener('click',()=>{
-            
-            decideGame();
-            console.log(decide);
-        })
-        function decideGame(){
-            if(decide%2==0){
-                note.innerHTML = "Tui Bolda"
-                decide = Math.floor(Math.random()*2);
-                setTimeout(()=>{
-                    note.innerHTML ='';
-                },2000)
-            
-                
-            }
-            else if(decide===0){
-                note.innerHTML ="abar Ki sunte chas"
-                decide = Math.floor(Math.random()*2);
-                setTimeout(()=>{
-                    note.innerHTML ='';
-                },2000)
-                
-            }
-            else{
-                note.innerHTML ="Tui Alu"
-                decide = Math.floor(Math.random()*2);
-                setTimeout(()=>{
-                    note.innerHTML ='';
-                },2000)
-                
-            }
-        }
-    </script>
+     <button onclick="showRose()">please click </button>
+  <br>
+  <img id="rose" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Rose_Red_Beauty.jpg/800px-Rose_Red_Beauty.jpg" alt="A Rose">
+
+  <script>
+    function showRose() {
+      document.getElementById("rose").style.display = "block";
+    }
+  </script>
 </body>
 </html>
