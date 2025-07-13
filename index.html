@@ -1,29 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <style>
-    #rose {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show a Rose</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: white;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #ff4da6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #ff3385;
+      transform: scale(1.05);
+    }
+
+    #rose-container {
       display: none;
-      width: 200px;
+      flex-direction: column;
+      align-items: center;
       margin-top: 20px;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
+
+    #rose {
+      width: 300px;
+      animation: float 3s ease-in-out infinite, sway 6s ease-in-out infinite;
+    }
+
+    #text {
+      margin-top: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #cc0052;
+    }
+
+    /* Floating up and down */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Gentle side-to-side sway */
+    @keyframes sway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(1deg);
+      }
+      75% {
+        transform: rotate(-1deg);
+      }
+    }
+
+    @media (max-width: 600px) {
+      #rose {
+        width: 250px;
+      }
+
+      #text {
+        font-size: 20px;
+      }
     }
   </style>
+</head>
 <body>
-     <button onclick="showRose()">please click </button>
-  <br>
-  <img id="rose" src="https://static.vecteezy.com/system/resources/thumbnails/018/871/683/small_2x/rose-on-transparent-background-for-valentine-s-day-png.png" alt="A Rose"/>
+
+  <button id="showBtn" onclick="showRose()"> Please Click</button>
+
+  <div id="rose-container">
+    <img id="rose" src="https://static.vecteezy.com/system/resources/thumbnails/018/871/683/small_2x/rose-on-transparent-background-for-valentine-s-day-png.png" alt="A Rose" />
+    <div id="text">Ei ne</div>
+  </div>
 
   <script>
     function showRose() {
-      document.getElementById("rose").style.display = "block";
+      document.getElementById("rose-container").style.display = "flex";
+      document.getElementById("showBtn").style.display = "none";
     }
   </script>
+
 </body>
 </html>
