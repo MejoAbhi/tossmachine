@@ -1,106 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Show a Rose</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For You ❤️</title>
   <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: white;
+    :root{
+      --bg1:#ff9a9e; --bg2:#fad0c4; --ink:#2a2a2a; --card:#ffffffee; --accent:#ff4d6d;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color:var(--ink);
+      overflow:hidden;
+    }
+    .card{
+      width:min(92vw,680px);
+      background:var(--card);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:0 20px 60px #0000001a, 0 2px 12px #00000014;
+      text-align:center;
+      position:relative;
+    }
+    .circle-pic{
+      width:110px;height:110px;border-radius:50%;
+      object-fit:cover;object-position:center;
+      border:4px solid #fff; box-shadow:0 10px 30px #ff5d8e55;
+      margin:-70px auto 12px; display:block; background:#fff;
+    }
+    .subtitle{
+      margin:0 0 4px; opacity:.8; letter-spacing:.04em; font-size:14px;
+      text-transform:uppercase;
+    }
+    h1{
+      margin:6px 0 12px; font-size:clamp(26px,5vw,34px); line-height:1.15;
+      overflow:hidden; border-right:.12em solid var(--accent); white-space:nowrap;
+      margin-inline:auto; width: 0; animation: typing 3s steps(30,end) forwards, blink .9s step-end infinite;
+    }
+    @keyframes typing{to{width:100%}}
+    @keyframes blink{50%{border-color:transparent}}
+
+    .big-heart{
+      width:76px; height:76px; margin:12px auto 6px; position:relative;
+      transform:rotate(-45deg);
+    }
+    .big-heart::before,.big-heart::after{
+      content:""; position:absolute; width:76px; height:76px; background:var(--accent);
+      border-radius:50%;
+      filter: drop-shadow(0 6px 12px #ff4d6d66);
+    }
+    .big-heart::before{left:38px;}
+    .big-heart::after{top:-38px;}
+    .shine{
+      position:absolute; inset:0; border-radius:22px;
+      background: radial-gradient(120px 40px at 20% 0%, #ffffffaa, transparent 60%),
+                  radial-gradient(80px 30px at 80% 0%, #ffffff66, transparent 60%);
+      pointer-events:none;
+    }
+    p{margin:10px 0 18px; font-size:16px}
+    .btn{
+      appearance:none; border:none; padding:14px 18px; border-radius:12px;
+      background:var(--accent); color:#fff; font-weight:700; font-size:16px;
+      cursor:pointer; transition: transform .05s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow:0 10px 24px #ff4d6d55;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99)}
+    .btn:hover{ filter: brightness(1.05) }
+
+    #surprise{ display:none; margin-top:16px; }
+    .note{
+      background:#fff; border:2px dashed #ff7a90; padding:16px; border-radius:14px;
+      font-size:17px;
+    }
+    .mini{
+      font-size:13px; opacity:.75; margin-top:10px;
     }
 
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      font-weight: bold;
-      background-color: #ff4da6;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
+    /* Floating background hearts */
+    .float-heart{
+      position:fixed; bottom:-20px; font-size:20px; opacity:.9; pointer-events:none;
+      animation: up 3.8s ease-in forwards;
+      filter: drop-shadow(0 4px 10px #00000022);
+    }
+    @keyframes up{
+      0%{ transform:translateY(0) translateX(0) scale(.9); opacity:.9}
+      70%{ opacity:1}
+      100%{ transform:translateY(-110vh) translateX(var(--dx)) scale(1.2); opacity:0}
     }
 
-    button:hover {
-      background-color: #ff3385;
-      transform: scale(1.05);
-    }
-
-    #rose-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    #rose {
-      width: 300px;
-      animation: float 3s ease-in-out infinite, sway 6s ease-in-out infinite;
-    }
-
-    #text {
-      margin-top: 10px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #cc0052;
-    }
-
-    /* Floating up and down */
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    /* Gentle side-to-side sway */
-    @keyframes sway {
-      0%, 100% {
-        transform: rotate(0deg);
-      }
-      25% {
-        transform: rotate(1deg);
-      }
-      75% {
-        transform: rotate(-1deg);
-      }
-    }
-
-    @media (max-width: 600px) {
-      #rose {
-        width: 250px;
-      }
-
-      #text {
-        font-size: 20px;
-      }
+    footer{
+      margin-top:16px; font-size:12px; opacity:.6;
     }
   </style>
 </head>
 <body>
+  <div class="card">
+    <!-- Optional: add a cute pic of you two -->
+    <img class="circle-pic" src="https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?q=80&w=400" alt="Us ❤️" />
 
-  <button id="showBtn" onclick="showRose()"> Please Click</button>
+    <div class="shine" aria-hidden="true"></div>
 
-  <div id="rose-container">
-    <img id="rose" src="https://static.vecteezy.com/system/resources/thumbnails/018/871/683/small_2x/rose-on-transparent-background-for-valentine-s-day-png.png" alt="A Rose" />
-    <div id="text">Ei ne</div>
+    <p class="subtitle">For</p>
+    <h1><!-- her name here -->My Favorite Person</h1>
+
+    <div class="big-heart" aria-hidden="true"></div>
+
+    <p>
+      Every day is better with you. Thanks for being my happy place. 🌸
+    </p>
+
+    <button class="btn" id="revealBtn">Tap for a surprise</button>
+
+    <div id="surprise">
+      <div class="note">
+        <!-- your message here -->
+        I don’t need a perfect day—just a few minutes with you.  
+        Coffee on me this week? ☕💫
+      </div>
+      <div class="mini">P.S. I made this page just for you. 💌</div>
+    </div>
+
+    <footer>Made with HTML, CSS & a little love.</footer>
   </div>
 
   <script>
-    function showRose() {
-      document.getElementById("rose-container").style.display = "flex";
-      document.getElementById("showBtn").style.display = "none";
-    }
-  </script>
+    // Floating heart burst + reveal
+    const btn = document.getElementById('revealBtn');
+    const surprise = document.getElementById('surprise');
 
+    function heartBurst(count=24){
+      const emojis = ["❤️","💖","💘","💝","🩷","💗","💕"];
+      for(let i=0;i<count;i++){
+        const span = document.createElement('span');
+        span.className = 'float-heart';
+        span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        span.style.left = Math.random()*100 + 'vw';
+        span.style.fontSize = (16 + Math.random()*20) + 'px';
+        span.style.setProperty('--dx', (Math.random()*80 - 40) + 'px');
+        document.body.appendChild(span);
+        span.addEventListener('animationend', ()=> span.remove());
+      }
+    }
+
+    btn.addEventListener('click', ()=>{
+      surprise.style.display = 'block';
+      heartBurst(30);
+      btn.textContent = '🫶 You found it!';
+      btn.disabled = true;
+    });
+
+    // Gentle ambient hearts in background
+    setInterval(()=> heartBurst(2), 2500);
+  </script>
 </body>
 </html>
