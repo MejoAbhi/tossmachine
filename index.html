@@ -3,120 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsive Button</title>
+<title>Surprise</title>
 
 <style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        font-family:Arial, Helvetica, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    overflow:hidden;
+}
+
+#landing{
+    text-align:center;
+}
+
+button{
+    padding:18px 40px;
+    font-size:22px;
+    border:none;
+    border-radius:12px;
+    background:#ff5722;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+#message{
+    display:none;
+    color:#fff;
+    text-align:center;
+}
+
+h1{
+    font-size:2rem;
+    margin-bottom:20px;
+}
+
+.firework{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    animation:explode 1.2s ease-out forwards;
+}
+
+@keyframes explode{
+    0%{
+        transform:translate(0,0) scale(0);
+        opacity:1;
     }
-
-    body{
-        min-height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        background:linear-gradient(135deg,#6a11cb,#2575fc);
-        padding:20px;
+    100%{
+        transform:translate(var(--x),var(--y)) scale(1.5);
+        opacity:0;
     }
-
-    .container{
-        width:100%;
-        max-width:500px;
-        background:#fff;
-        border-radius:20px;
-        padding:30px 20px;
-        text-align:center;
-        box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    h2{
-        margin-bottom:20px;
-        color:#333;
-        font-size:1.6rem;
-    }
-
-    button{
-        width:100%;
-        padding:15px;
-        font-size:1.1rem;
-        border:none;
-        border-radius:12px;
-        background:#007BFF;
-        color:white;
-        cursor:pointer;
-        transition:0.3s;
-    }
-
-    button:hover{
-        background:#0056b3;
-        transform:scale(1.02);
-    }
-
-    #message{
-        display:none;
-        margin-top:25px;
-        font-size:1.2rem;
-        font-weight:bold;
-        color:#d63384;
-        line-height:1.6;
-        animation:fadeIn 0.8s ease;
-        word-wrap:break-word;
-    }
-
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-            transform:translateY(20px);
-        }
-        to{
-            opacity:1;
-            transform:translateY(0);
-        }
-    }
-
-    /* Mobile */
-    @media (max-width:600px){
-        .container{
-            padding:25px 15px;
-        }
-
-        h2{
-            font-size:1.3rem;
-        }
-
-        button{
-            font-size:1rem;
-            padding:14px;
-        }
-
-        #message{
-            font-size:1rem;
-        }
-    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>Click the Button</h2>
+<div id="landing">
+    <button onclick="showSurprise()">Click Here 🎉</button>
+</div>
 
-    <button onclick="showMessage()">
-        Click Here
-    </button>
-
-    <div id="message">
-        Sangita akta hawasi meye.<br>
-        Or matha dekhano dorkar.
-    </div>
+<div id="message">
+    <h1>🎉 Surprise! 🎆</h1>
+    <h2>Have a wonderful day!</h2>
 </div>
 
 <script>
-function showMessage() {
-    document.getElementById("message").style.display = "block";
+function showSurprise(){
+
+    document.getElementById("landing").style.display="none";
+    document.getElementById("message").style.display="block";
+
+    for(let i=0;i<300;i++){
+
+        let p=document.createElement("div");
+        p.className="firework";
+
+        p.style.left=Math.random()*window.innerWidth+"px";
+        p.style.top=Math.random()*window.innerHeight+"px";
+
+        p.style.background=`hsl(${Math.random()*360},100%,60%)`;
+
+        p.style.setProperty("--x",(Math.random()*300-150)+"px");
+        p.style.setProperty("--y",(Math.random()*300-150)+"px");
+
+        document.body.appendChild(p);
+
+        setTimeout(()=>p.remove(),1200);
+    }
 }
 </script>
 
