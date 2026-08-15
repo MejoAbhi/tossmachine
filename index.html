@@ -3,27 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surprise</title>
+<title>Rocket Fireworks Surprise</title>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
 }
 
 body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#111;
     overflow:hidden;
+    background:linear-gradient(to bottom,#020111,#191970);
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
 }
 
 #landing{
-    text-align:center;
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
 }
 
 button{
@@ -32,9 +38,10 @@ button{
     border:none;
     border-radius:12px;
     background:#ff5722;
-    color:#fff;
+    color:white;
     cursor:pointer;
     transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
 }
 
 button:hover{
@@ -43,71 +50,193 @@ button:hover{
 
 #message{
     display:none;
-    color:#fff;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
     text-align:center;
+    color:white;
+    z-index:20;
+    animation:pop 1s ease;
+    text-shadow:
+        0 0 10px white,
+        0 0 20px yellow,
+        0 0 40px orange;
 }
 
-h1{
-    font-size:2rem;
+#message h1{
+    font-size:clamp(2rem,6vw,4rem);
     margin-bottom:20px;
 }
 
-.firework{
-    position:absolute;
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    animation:explode 1.2s ease-out forwards;
+#message p{
+    font-size:clamp(1.2rem,3vw,2rem);
+    margin:10px 0;
 }
 
-@keyframes explode{
+@keyframes pop{
     0%{
-        transform:translate(0,0) scale(0);
-        opacity:1;
+        transform:translate(-50%,-50%) scale(0);
+        opacity:0;
+    }
+    80%{
+        transform:translate(-50%,-50%) scale(1.1);
     }
     100%{
-        transform:translate(var(--x),var(--y)) scale(1.5);
-        opacity:0;
+        transform:translate(-50%,-50%) scale(1);
+        opacity:1;
     }
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <div id="landing">
-    <button onclick="showSurprise()">Click Here 🎉</button>
+    <button onclick="startShow()">🎁 Click Here</button>
 </div>
 
+<canvas id="canvas"></canvas>
+
 <div id="message">
-    <h1>🎉 Surprise! 🎆</h1>
-    <h2>Have a wonderful day!</h2>
+    <h1>🎆 CONGRATULATIONS! 🎆</h1>
+    <p>😂 Sangita Akta Hawasi meye 😂</p>
+    <p>Or matha dekhano dorkar ache😄</p>
 </div>
 
 <script>
-function showSurprise(){
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+resize();
+window.addEventListener("resize",resize);
+
+let particles=[];
+
+class Particle{
+    constructor(x,y,color){
+        this.x=x;
+        this.y=y;
+        this.color=color;
+
+        let angle=Math.random()*Math.PI*2;
+        let speed=Math.random()*8+2;
+
+        this.vx=Math.cos(angle)*speed;
+        this.vy=Math.sin(angle)*speed;
+
+        this.alpha=1;
+        this.size=Math.random()*3+2;
+    }
+
+    update(){
+        this.x+=this.vx;
+        this.y+=this.vy;
+        this.vy+=0.04;
+        this.alpha-=0.01;
+    }
+
+    draw(){
+        ctx.globalAlpha=this.alpha;
+        ctx.fillStyle=this.color;
+
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+}
+
+function explode(x,y){
+
+    const colors=[
+        "#ff0000",
+        "#00ff00",
+        "#00ffff",
+        "#ffff00",
+        "#ff00ff",
+        "#ffffff",
+        "#ff9900"
+    ];
+
+    let color=colors[Math.floor(Math.random()*colors.length)];
+
+    for(let i=0;i<120;i++){
+        particles.push(new Particle(x,y,color));
+    }
+}
+
+function animate(){
+
+    ctx.fillStyle="rgba(0,0,20,0.20)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    for(let i=particles.length-1;i>=0;i--){
+
+        particles[i].update();
+        particles[i].draw();
+
+        if(particles[i].alpha<=0){
+            particles.splice(i,1);
+        }
+    }
+
+    ctx.globalAlpha=1;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+function launchRocket(){
+
+    let x=Math.random()*canvas.width;
+    let y=canvas.height;
+
+    let rocket=setInterval(()=>{
+
+        ctx.fillStyle="white";
+        ctx.beginPath();
+        ctx.arc(x,y,3,0,Math.PI*2);
+        ctx.fill();
+
+        y-=8;
+
+        if(y<canvas.height*(0.2+Math.random()*0.4)){
+
+            clearInterval(rocket);
+
+            explode(x,y);
+        }
+
+    },16);
+}
+
+function startShow(){
 
     document.getElementById("landing").style.display="none";
     document.getElementById("message").style.display="block";
 
-    for(let i=0;i<300;i++){
+    let count=0;
 
-        let p=document.createElement("div");
-        p.className="firework";
+    let interval=setInterval(()=>{
 
-        p.style.left=Math.random()*window.innerWidth+"px";
-        p.style.top=Math.random()*window.innerHeight+"px";
+        launchRocket();
+        count++;
 
-        p.style.background=`hsl(${Math.random()*360},100%,60%)`;
+        if(count>=20){
+            clearInterval(interval);
+        }
 
-        p.style.setProperty("--x",(Math.random()*300-150)+"px");
-        p.style.setProperty("--y",(Math.random()*300-150)+"px");
+    },350);
 
-        document.body.appendChild(p);
-
-        setTimeout(()=>p.remove(),1200);
-    }
 }
+
 </script>
 
 </body>
